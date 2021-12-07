@@ -97,30 +97,38 @@ void loop()
     ArduinoOTA.handle();
     sendTelemetrie(now,CurrentEffect);
 
-   if (CurrentEffect.length() == 0) {
-        xmas();
-        CurrentEffect="xmas";
+    if (now - lastnow > 2000) {
+        if (CurrentEffect == "Schalke2"){
+            Schalke(50);
+            CurrentEffect="Schalke";
+        }
+        else {
+            Schalke2(50);
+            CurrentEffect="Schalke2";
+        }
     }
 
-  if (now - lastMsg > 5000) {
-       xmas();
-  }
-  if (now - lastnow > 2000) {
-      uint32_t oldColor;
-      int Pixel = random(NUM_LEDS);
-      oldColor = strip.getPixelColor(Pixel);
-      uint8_t r = oldColor >> 16;
-      uint8_t g = oldColor >> 8;
-      uint8_t b = oldColor;
-      setPixel(Pixel,0xff,0xff,0xff);
-      showStrip();
-      delay(20);
-      setPixel(Pixel,r,g,b);
-      showStrip();
-      delay(200);
-      lastnow=now;
-  }
-    //int Pixel=0;
+  // if (CurrentEffect.length() == 0) {
+  //      xmas();
+  //      CurrentEffect="xmas";
+  //  }
+
+  //if (now - lastnow > 2000) {
+  //    uint32_t oldColor;
+  //    int Pixel = random(NUM_LEDS);
+  //    oldColor = strip.getPixelColor(Pixel);
+  //    uint8_t r = oldColor >> 16;
+  //    uint8_t g = oldColor >> 8;
+  //    uint8_t b = oldColor;
+  //    setPixel(Pixel,0xff,0xff,0xff);
+  //    showStrip();
+  //    delay(20);
+  //    setPixel(Pixel,r,g,b);
+  //    showStrip();
+  //    delay(200);
+  //    lastnow=now;
+  //}
+  //  //int Pixel=0;
     //int sleep=30;
     //for (Pixel=0;Pixel<NUM_LEDS;Pixel++){
     //    oldColor = strip.getPixelColor(Pixel);
