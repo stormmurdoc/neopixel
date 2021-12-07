@@ -18,39 +18,9 @@
 #define PIN D7
 #define NUM_LEDS 100
 
-bool effectSet=false;
-char* CurrentEffect="xmas";
-
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRB + NEO_KHZ800);
+String CurrentEffect="";
 int i=0;
-
-void showStrip() {
- #ifdef ADAFRUIT_NEOPIXEL_H
-   // NeoPixel
-   strip.show();
- #endif
- #ifndef ADAFRUIT_NEOPIXEL_H
-   // FastLED
-   FastLED.show();
- #endif
-}
-
-// set one LED
-void setPixel(int Pixel, byte red, byte green, byte blue) {
- #ifdef ADAFRUIT_NEOPIXEL_H
-   // NeoPixel
-   strip.setPixelColor(Pixel, strip.Color(red, green, blue));
- #endif
- #ifndef ADAFRUIT_NEOPIXEL_H
-   // FastLED
-   leds[Pixel].r = red;
-   leds[Pixel].g = green;
-   leds[Pixel].b = blue;
- #endif
-}
-
-
-
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRB + NEO_KHZ800);
 WiFiClient espClient;
 PubSubClient client(espClient);
 WiFiUDP ntpUDP;
@@ -60,6 +30,7 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP,NTP_SERVER, 3600, 60000);
 
 long lastMsg = 0;
+long lastnow = 0;
 int lastLEDState = 0;
 int value = 0;
 char msg[50];
@@ -71,7 +42,6 @@ const int ledPin = D7;
 
 #include <effects.h>
 #include <main_functions.h>
-
 
 /*
  * Setup procedure
@@ -105,9 +75,11 @@ void setup()
     // print some debug infos
     printDevInfos();
 
-    // set birghtness
-    effectSet = false;
+    // set brightness to pull not so much power
     strip.setBrightness(80);
+
+    // disable all LEDs
+    setAll(0,0,0);
 }
 
 /*
@@ -124,4 +96,59 @@ void loop()
     timeClient.update();
     ArduinoOTA.handle();
     sendTelemetrie(now,CurrentEffect);
+
+   if (CurrentEffect.length() == 0) {
+        xmas();
+        CurrentEffect="xmas";
+    }
+
+  if (now - lastMsg > 5000) {
+       xmas();
+  }
+  if (now - lastnow > 2000) {
+      uint32_t oldColor;
+      int Pixel = random(NUM_LEDS);
+      oldColor = strip.getPixelColor(Pixel);
+      uint8_t r = oldColor >> 16;
+      uint8_t g = oldColor >> 8;
+      uint8_t b = oldColor;
+      setPixel(Pixel,0xff,0xff,0xff);
+      showStrip();
+      delay(20);
+      setPixel(Pixel,r,g,b);
+      showStrip();
+      delay(200);
+      lastnow=now;
+  }
+    //int Pixel=0;
+    //int sleep=30;
+    //for (Pixel=0;Pixel<NUM_LEDS;Pixel++){
+    //    oldColor = strip.getPixelColor(Pixel);
+    //    uint8_t r = oldColor >> 16;
+    //    uint8_t g = oldColor >> 8;
+    //    uint8_t b = oldColor;
+
+    //    setPixel(Pixel,0xff,0xff,0xff);
+    //    showStrip();
+    //    delay(sleep);
+    //    setPixel(Pixel,r,g,b);
+    //    showStrip();
+    //    delay(sleep);
+    //}
+    //showStrip();
+    //for (Pixel=NUM_LEDS;Pixel<1;Pixel--){
+    //    oldColor = strip.getPixelColor(Pixel);
+    //    uint8_t r = oldColor >> 16;
+    //    uint8_t g = oldColor >> 8;
+    //    uint8_t b = oldColor;
+
+    //    setPixel(Pixel,0xff,0xff,0xff);
+    //    showStrip();
+    //    delay(sleep);
+    //    setPixel(Pixel,r,g,b);
+    //    showStrip();
+    //    delay(sleep);
+    //}
+
 }
+// vim:filetype=arduino

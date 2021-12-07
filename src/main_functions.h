@@ -162,7 +162,7 @@ void FlashStatusLED(int led){
 /*
  * Publish mqtt data
 */
-void sendTelemetrie(long now, char* currenteffect){
+void sendTelemetrie(long now, String currenteffect){
 
     // send telemetrie data
     if (now - lastMsg > UPDATE_INTERVAL) {
@@ -171,14 +171,15 @@ void sendTelemetrie(long now, char* currenteffect){
         itoa(rssi,tmp,10);
         FlashStatusLED(LED_BUILTIN);
         client.publish(MQTT_TOPIC_RSSI, tmp);
-        client.publish(MQTT_TOPIC_EFFECT, currenteffect);
+        //client.publish(MQTT_TOPIC_EFFECT, currenteffect);
     }
 }
 
 /*
  * Publish mqtt data
+ void callback(char* topic, byte* message, unsigned int length) {
 */
-void callback(char* topic, byte* message, unsigned int length) {
+void callback(char* topic, byte* message, int length) {
 
     Serial.print("[");
     Serial.print(timeClient.getFormattedTime());
@@ -188,9 +189,9 @@ void callback(char* topic, byte* message, unsigned int length) {
     Serial.print(". Message: ");
     FlashStatusLED(LED_BUILTIN);
     String messageTemp;
-    char* LED_STATE;
-    char* EFFECT;
-    char* CMND;
+    const char *LED_STATE;
+    const char *EFFECT="";
+    const char *CMND="";
 
     for (int i = 0; i < length; i++) {
       Serial.print((char)message[i]);
@@ -199,11 +200,9 @@ void callback(char* topic, byte* message, unsigned int length) {
 
     // cmnd topic
     if (String(topic) == String(MQTT_TOPIC_CMND)) {
-      Serial.print(">> cmnd: ");
       if(messageTemp == "set_on"){
         digitalWrite(ledPin, HIGH);
         lastLEDState=HIGH;
-        xmas();
         CMND="on";
       }
       else if(messageTemp == "set_off"){
@@ -212,20 +211,72 @@ void callback(char* topic, byte* message, unsigned int length) {
         setAll(0,0,0);
         CMND="off";
       }
-      if(messageTemp == "set_on"){
-        digitalWrite(ledPin, HIGH);
-        lastLEDState=HIGH;
-        xmas();
-        CMND="on";
-      }
-      else if(messageTemp == "schalke"){
-        EFFECT="schalke"
+      else if(messageTemp == "set_schalke"){
+        EFFECT="schalke";
+        Schalke(10);
         CMND="schalke";
       }
-      else if(messageTemp == "xmas"){
+      else if(messageTemp == "set_xmas"){
         Serial.println(">> xmas");
-        EFFECT="xmas"
+        EFFECT="xmas";
+        xmas();
         CMND="xmas";
+      }
+      else if(messageTemp == "set_pct_1"){
+        strip.setBrightness(1);
+        strip.show();
+      }
+      else if(messageTemp == "set_pct_5"){
+        strip.setBrightness(5);
+        strip.show();
+      }
+      else if(messageTemp == "set_pct_10"){
+        strip.setBrightness(10);
+        strip.show();
+      }
+      else if(messageTemp == "set_pct_20"){
+        strip.setBrightness(20);
+        strip.show();
+      }
+      else if(messageTemp == "set_pct_30"){
+        strip.setBrightness(30);
+        strip.show();
+      }
+      else if(messageTemp == "set_pct_40"){
+        strip.setBrightness(40);
+        strip.show();
+      }
+      else if(messageTemp == "set_pct_50"){
+        strip.setBrightness(50);
+        strip.show();
+      }
+      else if(messageTemp == "set_pct_60"){
+        strip.setBrightness(60);
+        strip.show();
+      }
+      else if(messageTemp == "set_pct_70"){
+        strip.setBrightness(70);
+        strip.show();
+      }
+      else if(messageTemp == "set_pct_80"){
+        strip.setBrightness(80);
+        strip.show();
+      }
+      else if(messageTemp == "set_pct_90"){
+        strip.setBrightness(90);
+        strip.show();
+      }
+      else if(messageTemp == "set_pct_100"){
+        strip.setBrightness(100);
+        strip.show();
+      }
+      else if(messageTemp == "set_pct_150"){
+        strip.setBrightness(150);
+        strip.show();
+      }
+      else if(messageTemp == "set_pct_200"){
+        strip.setBrightness(200);
+        strip.show();
       }
 
       else if(messageTemp == "toggle"){
@@ -249,12 +300,11 @@ void callback(char* topic, byte* message, unsigned int length) {
           LED_STATE="off";
       }
       Serial.print(">> ");
-      Serial.print(messageTemp);
-
+      Serial.println(messageTemp);
+      Serial.println("<< ");
       client.publish(MQTT_TOPIC_OUT, LED_STATE);
+      //client.publish(MQTT_TOPIC_CMND, CMND);
       client.publish(MQTT_TOPIC_EFFECT, EFFECT);
     }
-
+    Serial.println("");
 }
-
-

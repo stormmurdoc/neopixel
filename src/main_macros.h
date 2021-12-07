@@ -64,7 +64,7 @@
     #warning "UPDATE_INTERVAL NOT defined"
 #endif
 
-char* clientId = ESP_HOSTNAME;
+const char *clientId = ESP_HOSTNAME;
 char cMQTT_TOPIC[20];
 char MQTT_TOPIC_RSSI[20];
 char MQTT_TOPIC_OUT[20];
