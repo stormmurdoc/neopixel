@@ -1,5 +1,10 @@
-// LED Effects
+/*
+ * LED Effects
+ */
 
+/*
+ * Show Effects
+ */
 void showStrip() {
  #ifdef ADAFRUIT_NEOPIXEL_H
    // NeoPixel
@@ -10,8 +15,11 @@ void showStrip() {
    FastLED.show();
  #endif
 }
+j
 
-// set one LED
+/*
+ * set one LED
+ */
 void setPixel(int Pixel, byte red, byte green, byte blue) {
 #ifdef ADAFRUIT_NEOPIXEL_H
     // NeoPixel
@@ -25,7 +33,9 @@ void setPixel(int Pixel, byte red, byte green, byte blue) {
 #endif
 }
 
-// set all LEDs
+/*
+ * set all LEDs
+ */
 void setAll(byte red, byte green, byte blue) {
     for(int i = 0; i < NUM_LEDS; i++ ) {
         setPixel(i, red, green, blue);
@@ -33,6 +43,10 @@ void setAll(byte red, byte green, byte blue) {
     showStrip();
 }
 
+/*
+ * Schalke Effect #1
+ * Type: dynamic
+ */
 void Schalke(int sleep){
     for(int x=0;x<NUM_LEDS;x++){
         if ( (x % 2) == 0) {
@@ -47,7 +61,12 @@ void Schalke(int sleep){
         }
     }
 }
-void Schalke2(int sleep){
+
+/*
+ * Schalke Effect #2
+ * Type: dynamic
+ */
+String Schalke2(int sleep){
     for(int x=NUM_LEDS;x>0;x--){
         if ( (x % 2) == 0) {
             strip.setPixelColor(x,255,255,255);
@@ -62,7 +81,10 @@ void Schalke2(int sleep){
     }
 }
 
-
+/*
+ * XMas Colors
+ * Type: Static
+ */
 void xmas() {
     int j=0;
     int run=0;
@@ -96,7 +118,10 @@ void xmas() {
     strip.show();
 }
 
-// Fade in and out
+/*****************************************************************************
+ * Fade in and out
+ * Type: dynamic
+ ****************************************************************************/
 void FadeInOut(byte red, byte green, byte blue){
   float r, g, b;
 
@@ -119,6 +144,7 @@ void FadeInOut(byte red, byte green, byte blue){
 
 /*****************************************************************************
  * RGBLoop Function
+ * Type: dynamic
  ****************************************************************************/
 void RGBLoop(){
   for(int j = 0; j < 3; j++ ) {
