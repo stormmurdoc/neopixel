@@ -1,6 +1,6 @@
 /***************************************************************************
-  ESP Skeleton
-  Descriptionc: A template for ESP8266 devices
+  ESP8266 Sketch for Neopixel USB SK6812 LED String
+  vim:filetype=arduino
  ***************************************************************************/
 
 /* include stuff */
@@ -18,17 +18,20 @@
 #define PIN D7
 #define NUM_LEDS 100
 
-String CurrentEffect="";
-int i=0;
+/*
+ * define required objects
+ */
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRB + NEO_KHZ800);
 WiFiClient espClient;
 PubSubClient client(espClient);
 WiFiUDP ntpUDP;
-
-// pio lib install "arduino-libraries/NTPClient"
-// europe.pool.ntp.org
 NTPClient timeClient(ntpUDP,NTP_SERVER, 3600, 60000);
 
+/*
+ * include some additional files
+ */
+String CurrentEffect="";
+int i=0;
 long lastMsg = 0;
 long lastnow = 0;
 int lastLEDState = 0;
@@ -37,18 +40,22 @@ char msg[50];
 char tmp[50];
 char time_value[20];
 
-// LED Pin
+// LED Pin which control the LED string
 const int ledPin = D7;
 
+/*
+ * include some additional files
+ */
 #include <effects.h>
 #include <main_functions.h>
+
 
 /*
  * Setup procedure
 */
 void setup()
 {
-    // init serial interface
+    // init serial interface for debugging purpose
     Serial.begin(115200);
 
     // MQTT define topics
@@ -82,6 +89,7 @@ void setup()
     setAll(0,0,0);
 }
 
+
 /*
  *  Main loop
  */
@@ -97,6 +105,7 @@ void loop()
     ArduinoOTA.handle();
     sendTelemetrie(now,CurrentEffect);
 
+    // run the effects
     if (now - lastnow > 2000) {
         if (CurrentEffect == "Schalke2"){
             Schalke(50);
@@ -159,4 +168,3 @@ void loop()
     //}
 
 }
-// vim:filetype=arduino
