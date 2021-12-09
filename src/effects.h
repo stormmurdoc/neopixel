@@ -15,7 +15,6 @@ void showStrip() {
    FastLED.show();
  #endif
 }
-j
 
 /*
  * set one LED
@@ -66,7 +65,7 @@ void Schalke(int sleep){
  * Schalke Effect #2
  * Type: dynamic
  */
-String Schalke2(int sleep){
+void Schalke2(int sleep){
     for(int x=NUM_LEDS;x>0;x--){
         if ( (x % 2) == 0) {
             strip.setPixelColor(x,255,255,255);

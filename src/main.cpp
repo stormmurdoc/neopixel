@@ -107,14 +107,7 @@ void loop()
 
     // run the effects
     if (now - lastnow > 2000) {
-        if (CurrentEffect == "Schalke2"){
-            Schalke(50);
-            CurrentEffect="Schalke";
-        }
-        else {
-            Schalke2(50);
-            CurrentEffect="Schalke2";
-        }
+       RGBLoop();
     }
 
   // if (CurrentEffect.length() == 0) {
