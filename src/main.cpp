@@ -106,9 +106,9 @@ void loop()
     sendTelemetrie(now,CurrentEffect);
 
     // run the effects
-    if (now - lastnow > 2000) {
+    //if (now - lastnow > 2000) {
        RGBLoop();
-    }
+    //}
 
   // if (CurrentEffect.length() == 0) {
   //      xmas();
