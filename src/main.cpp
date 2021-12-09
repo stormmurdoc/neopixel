@@ -32,6 +32,8 @@ NTPClient timeClient(ntpUDP,NTP_SERVER, 3600, 60000);
  */
 String CurrentEffect="";
 int i=0;
+int j=0;
+int k=0;
 long lastMsg = 0;
 long lastnow = 0;
 int lastLEDState = 0;
@@ -85,7 +87,13 @@ void setup()
     // set brightness to pull not so much power
     strip.setBrightness(80);
 
-    // disable all LEDs
+    // check strip
+    setAll(0xff,0,0);
+    delay(1000);
+    setAll(0,0xff,0);
+    delay(1000);
+    setAll(0,0,0xff);
+    delay(1000);
     setAll(0,0,0);
 }
 
@@ -103,12 +111,39 @@ void loop()
     client.loop();
     timeClient.update();
     ArduinoOTA.handle();
-    sendTelemetrie(now,CurrentEffect);
+    //sendTelemetrie(now,CurrentEffect);
 
     // run the effects
-    //if (now - lastnow > 2000) {
-       RGBLoop();
-    //}
+
+  if (now - lastnow > 1000) {
+   if (i<NUM_LEDS){
+    setPixel(i,0,0xff,0);
+    strip.show();
+   }
+   if ( i > 10 ) {
+    setPixel(j,0xff,0,0);
+    strip.show();
+    j++;
+   }
+   if ( i > 20 ) {
+    setPixel(k,0,0,0xff);
+    strip.show();
+    k++;
+   }
+
+   i++;
+   if (i>NUM_LEDS) {
+    i=0;
+   }
+   if (j>NUM_LEDS) {
+    j=0;
+   }
+   if (k>NUM_LEDS) {
+    k=0;
+   }
+   lastnow=now;
+  }
+
 
   // if (CurrentEffect.length() == 0) {
   //      xmas();

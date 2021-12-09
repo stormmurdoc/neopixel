@@ -208,18 +208,15 @@ void callback(char* topic, byte* message, int length) {
       else if(messageTemp == "set_off"){
         digitalWrite(ledPin, LOW);
         lastLEDState=LOW;
-        setAll(0,0,0);
         CMND="off";
       }
       else if(messageTemp == "set_schalke"){
         EFFECT="schalke";
-        Schalke(10);
         CMND="schalke";
       }
       else if(messageTemp == "set_xmas"){
         Serial.println(">> xmas");
         EFFECT="xmas";
-        xmas();
         CMND="xmas";
       }
       else if(messageTemp == "set_pct_1"){

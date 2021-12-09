@@ -730,7 +730,9 @@ void meteorRain(byte red, byte green, byte blue, byte meteorSize, byte meteorTra
   }
 }
 void randomBlink(){
-    int previous, current = 0;
+    int previous = 0;
+    int current = 0;
+
     for(int x=NUM_LEDS - 1; x >= 0; x--){
         strip.setPixelColor(previous,0,0,0);
         int i = random(0,NUM_LEDS);
