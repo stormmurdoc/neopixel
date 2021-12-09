@@ -34,6 +34,9 @@ String CurrentEffect="";
 int i=0;
 int j=0;
 int k=0;
+int l=0;
+int m=0;
+int n=0;
 long lastMsg = 0;
 long lastnow = 0;
 int lastLEDState = 0;
@@ -117,19 +120,35 @@ void loop()
 
   if (now - lastnow > 1000) {
    if (i<NUM_LEDS){
-    setPixel(i,0,0xff,0);
+    strip.setPixelColor(i,125,0,0);
     strip.show();
    }
    if ( i > 10 ) {
-    setPixel(j,0xff,0,0);
+    strip.setPixelColor(j,80,45,0);
     strip.show();
     j++;
    }
    if ( i > 20 ) {
-    setPixel(k,0,0,0xff);
+    strip.setPixelColor(k,64,64,0);
     strip.show();
     k++;
    }
+   if ( i > 30 ) {
+    strip.setPixelColor(l,0,64,64);
+    strip.show();
+    l++;
+   }
+   if ( i > 40 ) {
+    strip.setPixelColor(m,0,0,125);
+    strip.show();
+    m++;
+   }
+   if ( i > 50 ) {
+    strip.setPixelColor(n,0,125,0);
+    strip.show();
+    n++;
+   }
+
 
    i++;
    if (i>NUM_LEDS) {
@@ -140,6 +159,15 @@ void loop()
    }
    if (k>NUM_LEDS) {
     k=0;
+   }
+   if (l>NUM_LEDS) {
+    l=0;
+   }
+   if (m>NUM_LEDS) {
+    m=0;
+   }
+   if (n>NUM_LEDS) {
+    n=0;
    }
    lastnow=now;
   }
